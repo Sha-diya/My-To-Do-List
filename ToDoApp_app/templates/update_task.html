@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Update Task{% endblock %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+{% block content %}
+<div class="container mt-5">
+    <h3 class="mb-4">Update Task</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="taskTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="taskTitle" name="title" value="{{ task.title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="taskDueDate" class="form-label">Due Date</label>
+            <input type="date" class="form-control" id="taskDueDate" name="due_date" value="{{ task.due_date|date:'Y-m-d' }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{% url 'task_list' %}" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+/* ============================
+   Registration Container
+============================ */
+.register-container {
+    max-width: 400px;
+    padding: 30px;
+    margin-left: auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.register-container h2 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.register-container form div {
+    margin-bottom: 15px;
+}
+
+.register-container form input,
+.register-container form select,
+.register-container form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.register-container form input:focus,
+.register-container form select:focus,
+.register-container form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.register-container form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+/* ============================
+   Register Link
+============================ */
+.register-link {
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.register-link a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}

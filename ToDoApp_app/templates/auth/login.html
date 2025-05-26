@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+{% block body_class %}login-body{% endblock %}
+
+{% block content %}
+
+<!-- Login-specific CSS and JS -->
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<script src="{% static 'js/show_password.js' %}"></script>
+
+<div class="out-side-login">
+    
+    <div class="motivational-text">
+        <h1>Welcome Back!</h1>
+        <p>Stay focused. Stay determined.<br>You're one step closer to your goals.</p>
+    </div>
+
+    <div class="login-box">
+        <h2>Login</h2>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="error-message">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <input type="text" id="username" name="username" placeholder="Enter your username"
+                   {% if form.username.errors %}class="error"{% endif %} required>
+            {% if form.username.errors %}
+                <div class="error-message">{{ form.username.errors.0 }}</div>
+            {% endif %}
+
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Enter your password"
+                       {% if form.password.errors %}class="error"{% endif %} required>
+                <span class="toggle-password" onclick="togglePassword()">👁️</span>
+            </div>
+            {% if form.password.errors %}
+                <div class="error-message">{{ form.password.errors.0 }}</div>
+            {% endif %}
+
+            <button type="submit" class="login-button">Login</button>
+        </form>
+
+        <div class="register-link text-center">
+            <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

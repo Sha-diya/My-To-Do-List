@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My To-Do List{% endblock %}
+{% block content %}
+
+
+<div class="text-center mb-4">
+    
+    <div class="btn-group">
+      <a href="{% url 'filtered_tasks' 'today' %}" class="btn {% if current_filter == 'today' %}btn-success{% else %}btn-outline-secondary{% endif %}">Today</a>
+      <a href="{% url 'filtered_tasks' 'pending' %}" class="btn {% if current_filter == 'pending' %}btn-success{% else %}btn-outline-secondary{% endif %}">Pending</a>
+      <a href="{% url 'filtered_tasks' 'overdue' %}" class="btn {% if current_filter == 'overdue' %}btn-success{% else %}btn-outline-secondary{% endif %}">Overdue</a>
+      <a href="{% url 'task_list' %}" class="btn {% if not current_filter %}btn-dark{% else %}btn-outline-dark{% endif %}">All</a>
+    </div>
+
+</div>
+
+
+
+<div class="text-end mb-3">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+        + Add Task
+    </button>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="{% url 'add_task' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="addTaskModalLabel">Add New Task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="taskTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="taskTitle" name="title" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="taskDueDate" class="form-label">Due Date</label>
+              <input type="date" class="form-control" id="taskDueDate" name="due_date" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<h3 class="mt-4">Tasks</h3>
+
+{% for task in tasks %}
+    <div class="task-card task d-flex align-items-center justify-content-between p-3 mb-2 border" data-task-id="{{ task.id }}">
+        <div class="d-flex align-items-center">
+            <input type="checkbox" class="form-check-input me-3 complete-checkbox" {% if task.completed %}checked{% endif %}>
+
+            <div class="task-details">
+                <h5 class="mb-1">{{ task.title }}</h5>
+                <p class="mb-1 text-muted">
+                    <i class="far fa-clock"></i>
+                    {% if task.due_date %}
+                        {{ task.due_date|date:"D M d Y" }}
+                    {% else %}
+                        No due date
+                    {% endif %}
+                    <span class="badge-dot {% if task.completed %}badge-red{% else %}badge-yellow{% endif %}"></span>
+                </p>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="{% url 'delete_task' task.id %}" class="icon-btn" title="Delete">
+                <i class="fas fa-trash text-danger"></i>
+            </a>
+            <a href="{% url 'update_task' task.id %}" class="icon-btn" title="Edit">
+                <i class="fas fa-edit text-primary"></i>
+            </a>
+        </div>
+    </div>
+{% empty %}
+    <p class="text-center text-muted">No tasks found.</p>
+{% endfor %}
+
+<!-- Congratulations Modal -->
+<div id="congratsModal" style="display:none;" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+      <h2 class="mb-3 text-success"><i class="fas fa-check-circle"></i> Congratulations!</h2>
+      <p>You’ve successfully completed the task!</p>
+      <button id="closeCongratsBtn" class="btn btn-success mt-2">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Clapping sound -->
+<audio id="clapSound">
+    <source src="{% static 'sounds/clap.wav' %}" type="audio/wav">
+</audio>
+
+<!-- External JS file -->
+<script src="{% static 'js/task_notifications.js' %}"></script>
+
+{% endblock %}

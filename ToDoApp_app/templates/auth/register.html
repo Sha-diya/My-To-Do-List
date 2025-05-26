@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registraion{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<script src="{% static 'js/show_password.js' %}"></script>
+
+
+<div class="out-side-login">
+
+    <div class="motivational-text">
+        <h1>Join Us!</h1>
+        <p>Start your journey towards better task management.<br>Register now and take control of your tasks.</p>
+    </div>
+
+    
+    <div class="register-container">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error-message">{{ field.errors|striptags }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="login-button">Register</button>
+        </form>
+            <div class="register-link">
+                Already have an account? <a href="{% url 'login' %}">Login here</a>
+            </div>
+    </div>
+
+</div>
+{% endblock %}
